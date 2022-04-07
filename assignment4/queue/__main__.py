@@ -205,12 +205,11 @@ def main():
             path(s) to that actor from `src_actor`.
         """
         queue = Queue()
-        movies_seen: set[str] = set()
         edges: dict[str, ConnectionInfo] = {}
 
         debug_iters: int = 0
 
-        path_found: bool = False
+        done_searching: bool = False
         # Start searching from the source actor
         queue.enqueue(src_actor)
         edges[src_actor] = {
@@ -237,11 +236,6 @@ def main():
                 if movie not in all_movies:
                     continue
 
-                # Don't search this movie if we've looked at it before
-                if movie in movies_seen:
-                    continue
-                movies_seen.add(movie)
-
                 # Add all costars to our actor queue
                 cast = all_movies[movie]["cast"]
                 for costar in cast:
@@ -251,7 +245,7 @@ def main():
 
                     # If this costar hasn't been found
                     if costar not in edges:
-                        # Queue them
+                        # Enqueue them
                         queue.enqueue(costar)
                         # Add them to our connections
                         edges[costar] = {
@@ -259,28 +253,36 @@ def main():
                             "preds": defaultdict(set)
                         }
 
+                    # If we care about finding paths,
+                    # and actor is part of short path from src_actor to costar
                     if not dists_only and (
                         edges[actor]["dist"] < edges[costar]["dist"]
                     ):
+                        # Add this connection (and this movie)
                         edges[costar]["preds"][actor].add(movie)
 
+                    # If we've found a path to dest_actor
+                    if max_dist is None and (
+                        dest_actor is not None and costar == dest_actor
+                    ):
+                        # Keep searching up to the dist of the previous actor
+                        max_dist = edges[actor]["dist"]
+
+                    # If we've reached a maximum distance
                     if (
-                        # If we've reached our destination
-                        (dest_actor is not None and costar == dest_actor)
-                        # or we've reached a maximum distance
-                        or (max_dist is not None
-                        and edges[costar]["dist"] > max_dist)
+                        max_dist is not None
+                        and edges[costar]["dist"] > max_dist
                     ):
                         # Quit early
-                        path_found = True
+                        done_searching = True
                         queue.clear()
                         break
 
-                if path_found:
+                if done_searching:
                     break
 
-        # If path has been found
-        if path_found and dest_actor is not None:
+        # If done searching, and we want full paths
+        if done_searching and dest_actor is not None:
             # Find all connections from the destination actor to all
             # previously found actors
             dest_actor_dist = edges[dest_actor]["dist"]
