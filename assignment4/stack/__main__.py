@@ -10,9 +10,11 @@ from typing import Any
 
 from utils import Stack
 
+
 # Small function to call the appropriate clear-screen function
 def clear_screen():
     os.system("clear" if os.name == "posix" else "cls")
+
 
 def main():
     def duplicate(x: Any) -> tuple[Any, Any]:
@@ -93,6 +95,7 @@ def main():
                 print(f"Threw {e.__class__.__name__} with message:\n{e}")
                 print()
                 _ = input("Press any key to continue...")
+
 
 if __name__ == "__main__":
     main()

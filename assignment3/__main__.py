@@ -8,6 +8,7 @@ from typing import Any, Iterable
 
 from utils import SLList
 
+
 def main():
     def input_value(prompt: str = ""):
         while True:
@@ -192,6 +193,7 @@ def main():
             case _:
                 print("Invalid choice.")
 
+
 def input_sllist():
     # Enter iterable for SLList constructor
     while True:
@@ -232,6 +234,7 @@ def input_sllist():
             break
 
     return SLList(iterable, mu)
+
 
 if __name__ == "__main__":
     main()
