@@ -1,9 +1,26 @@
 from typing import Any, Callable, Iterable, Optional
 
-from .node import SNode, DNode
 
+class SLList:
+    class Node:
+        def __init__(self, value: Any = None) -> None:
+            """
+            Create a node for a singly linked list.
 
-class SingleLinkedList:
+            Parameters
+            ----------
+            value
+                Value of this node.
+            """
+            self.next: Optional[SLList.Node] = None
+            self.value = value
+
+        def __str__(self) -> str:
+            return str(self.value)
+
+        def __repr__(self) -> str:
+            return f"{self.__class__.__name__}({self.value!r})"
+
     def __init__(
         self,
         iterable: Optional[Iterable[Any]] = None,
@@ -20,7 +37,7 @@ class SingleLinkedList:
             Starting index of cycle, which ends at the end of
             `iterable`.
         """
-        self.head: Optional[SNode] = None
+        self.head: Optional[SLList.Node] = None
 
         if iterable is not None:
             try:
@@ -45,13 +62,13 @@ class SingleLinkedList:
         """
         Yield each node in the linked list.
 
-        This function yields each node as an `SNode` object. To iterate
-        through each actual value instead, it is sufficient to use the
-        `for`..`in` syntax.
+        This function yields each node as an `SLList.Node` object. To
+        iterate through each actual value instead, it is sufficient to
+        use the `for`..`in` syntax.
 
         Yields
         ------
-        SNode
+        SLList.Node
             Node object within the linked list.
         """
         p = self.head
@@ -165,7 +182,7 @@ class SingleLinkedList:
         val
             Value to append.
         """
-        temp = SNode(val)
+        temp = SLList.Node(val)
 
         if self.head is None:
             self.head = temp
@@ -173,7 +190,7 @@ class SingleLinkedList:
 
         p = None
         for p in self.iternodes():
-            p: Optional[SNode]
+            p: Optional[SLList.Node]
             pass
         assert p is not None
 
@@ -189,7 +206,7 @@ class SingleLinkedList:
         val
             Value to prepend.
         """
-        temp = SNode(val)
+        temp = SLList.Node(val)
         temp.next = self.head
         self.head = temp
 
@@ -223,7 +240,7 @@ class SingleLinkedList:
         if not (lam == 0 or pos < (mu + 1)):
             pos = (pos - (mu + 1)) % lam + (mu + 1)
 
-        temp = SNode(val)
+        temp = SLList.Node(val)
         p = self.head
         for i in range(lam + mu):
             if i + 1 == pos:
@@ -249,7 +266,7 @@ class SingleLinkedList:
 
         p = None
         for p in self.iternodes():
-            p: Optional[SNode]
+            p: Optional[SLList.Node]
             pass
 
         assert p is not None
@@ -342,7 +359,7 @@ class SingleLinkedList:
         # If node is first node in cycle
         if pos == mu:
             # Relink last node to node after the one to remove
-            last: Optional[SNode] = p
+            last: Optional[SLList.Node] = p
             for _ in range(lam):
                 assert last is not None
                 last = last.next
@@ -401,8 +418,8 @@ class SingleLinkedList:
         """
         Sort the linked list in ascending order.
 
-        The sort works by swapping the values of each item of the
-        linked list.
+        The sort works by swapping the values of each item of the linked
+        list.
 
         Parameters
         ----------
@@ -502,7 +519,7 @@ class SingleLinkedList:
                 if should_swap(i):
                     keys[i - 1], keys[i] = keys[i], keys[i - 1]
 
-                    q: SNode = p.next
+                    q: SLList.Node = p.next
                     p.next = q.next
                     q.next = p
                     if o is None:
@@ -528,7 +545,7 @@ class SingleLinkedList:
         target = None
         p = None
         for i, p in enumerate(self.iternodes()):
-            p: Optional[SNode]
+            p: Optional[SLList.Node]
             if i == mu:
                 target = p
 
@@ -545,8 +562,8 @@ class SingleLinkedList:
         Returns
         -------
         lam : int
-            Length of the detected cycle. If no cycle is detected,
-            `lam` will be 0.
+            Length of the detected cycle. If no cycle is detected, `lam`
+            will be 0.
         mu : int
             Starting index of the detected cycle. If no cycle is
             detected, `mu` will be the length of the linked list.
@@ -603,14 +620,14 @@ class SingleLinkedList:
 
         p = None
         for p in self.iternodes():
-            p: Optional[SNode]
+            p: Optional[SLList.Node]
             pass
         assert p is not None
 
         p.next = None
 
     def __add__(self, iterable: Iterable[Any]):
-        new_list: SingleLinkedList = SingleLinkedList(self)
+        new_list: SLList = SLList(self)
         for val in iterable:
             new_list.append(val)
         return new_list
@@ -622,9 +639,9 @@ class SingleLinkedList:
 
     def __mul__(self, count: int):
         if self.head is None or count <= 0:
-            return SingleLinkedList()
+            return SLList()
 
-        new_list: SingleLinkedList = SingleLinkedList(self)
+        new_list: SLList = SLList(self)
         for _ in range(count - 1):
             new_list += self
         return new_list
@@ -651,7 +668,27 @@ class SingleLinkedList:
         return self.head is not None
 
 
-class DoubleLinkedList:
+class DLList:
+    class Node:
+        def __init__(self, value: Any = None) -> None:
+            """
+            Create a node for a doubly linked list.
+
+            Parameters
+            ----------
+            value
+                Value of this node.
+            """
+            self.next: Optional[DLList.Node] = None
+            self.prev: Optional[DLList.Node] = None
+            self.value = value
+
+        def __str__(self) -> str:
+            return str(self.value)
+
+        def __repr__(self) -> str:
+            return f"{self.__class__.__name__}({self.value!r})"
+
     def __init__(
         self,
         iterable: Optional[Iterable[Any]] = None,
@@ -668,8 +705,8 @@ class DoubleLinkedList:
             True if the list is circular (where the node after the tail
             is the head, and the node before the head is the tail).
         """
-        self.head: Optional[DNode] = None
-        self.tail: Optional[DNode] = None
+        self.head: Optional[DLList.Node] = None
+        self.tail: Optional[DLList.Node] = None
 
         if iterable is not None:
             for val in iterable:
@@ -692,13 +729,13 @@ class DoubleLinkedList:
         """
         Yield each node in the linked list.
 
-        This function yields each node as a `DNode` object. To iterate
-        through each actual value instead, it is sufficient to use the
-        `for`..`in` syntax.
+        This function yields each node as a `DLList.Node` object. To
+        iterate through each actual value instead, it is sufficient to
+        use the `for`..`in` syntax.
 
         Yields
         ------
-        SNode
+        SLList.Node
             Node object within the linked list.
         """
         p = self.head
@@ -716,13 +753,13 @@ class DoubleLinkedList:
         """
         Yield each node in the linked list in reverse.
 
-        This function yields each node as a `DNode` object. To iterate
-        through each actual value instead, it is sufficient to use the
-        `for`..`in reversed(`..`)` syntax.
+        This function yields each node as a `DLList.Node` object. To
+        iterate through each actual value instead, it is sufficient to
+        use the `for`..`in reversed(`..`)` syntax.
 
         Yields
         ------
-        SNode
+        SLList.Node
             Node object within the linked list.
         """
         p = self.tail
@@ -808,7 +845,7 @@ class DoubleLinkedList:
             self.prepend(val)
             return
 
-        temp = DNode(val)
+        temp = DLList.Node(val)
 
         temp.prev = self.tail
         temp.next = self.tail.next
@@ -826,7 +863,7 @@ class DoubleLinkedList:
         val
             Value to prepend.
         """
-        temp = DNode(val)
+        temp = DLList.Node(val)
 
         if self.head is None or self.tail is None:
             self.head = temp
@@ -851,7 +888,7 @@ class DoubleLinkedList:
         val
             Value to insert.
         """
-        temp = DNode(val)
+        temp = DLList.Node(val)
 
         if pos == 0:
             self.prepend(val)
@@ -1018,7 +1055,7 @@ class DoubleLinkedList:
         has_cycle = self.find_cycle()
         self.remove_cycle()
 
-        temp: Optional[DNode] = None
+        temp: Optional[DLList.Node] = None
         current = self.head
         self.tail = self.head
 
@@ -1042,8 +1079,8 @@ class DoubleLinkedList:
         """
         Sort the linked list in ascending order.
 
-        The sort works by swapping the values of each item of the
-        linked list.
+        The sort works by swapping the values of each item of the linked
+        list.
 
         Parameters
         ----------
@@ -1132,7 +1169,7 @@ class DoubleLinkedList:
                 if should_swap(i):
                     keys[i - 1], keys[i] = keys[i], keys[i - 1]
 
-                    q: DNode = p.next
+                    q: DLList.Node = p.next
                     r = q.next
                     p.next = q.next
                     q.prev = p.prev
@@ -1209,7 +1246,7 @@ class DoubleLinkedList:
         if isinstance(iterable, self.__class__):
             has_cycle = has_cycle or iterable.find_cycle()
 
-        new_list: DoubleLinkedList = DoubleLinkedList(self, has_cycle)
+        new_list: DLList = DLList(self, has_cycle)
         for val in iterable:
             new_list.append(val)
         return new_list
@@ -1221,9 +1258,9 @@ class DoubleLinkedList:
 
     def __mul__(self, count: int):
         if self.head is None or count <= 0:
-            return DoubleLinkedList()
+            return DLList()
 
-        new_list: DoubleLinkedList = DoubleLinkedList(self)
+        new_list: DLList = DLList(self)
         for _ in range(count - 1):
             new_list += self
         return new_list

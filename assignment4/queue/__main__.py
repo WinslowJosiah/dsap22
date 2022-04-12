@@ -41,8 +41,8 @@ def weighted_sample_without_replacement(
     k: int = 1
 ) -> list[Any]:
     """
-    Return a `k` sized list of elements chosen from the `population` without
-    replacement.
+    Return a `k` sized list of elements chosen from the `population`
+    without replacement.
 
     Parameters
     ----------
@@ -69,7 +69,8 @@ def weighted_sample_without_replacement(
 # Helper function to input an actor by name
 def input_actor(prompt: str = "", default: str = KEVIN_BACON_ID) -> str:
     """
-    Ask the user for the name of an actor, and return their IMDb actor ID.
+    Ask the user for the name of an actor, and return their IMDb actor
+    ID.
 
     Parameters
     ----------
@@ -182,8 +183,8 @@ def main():
         debug: bool = False
     ) -> dict[str, ConnectionInfo]:
         """
-        Search for path(s) outward from `src_actor` using a breadth-first
-        search.
+        Search for path(s) outward from `src_actor` using a
+        breadth-first search.
 
         Parameters
         ----------
@@ -311,8 +312,8 @@ def main():
         dest: str
     ) -> list[list[PredecessorInfo]]:
         """
-        Recursively gather all paths from the source actor used to generate
-        `edges` to another actor.
+        Recursively gather all paths from the source actor used to
+        generate `edges` to another actor.
 
         Parameters
         ----------

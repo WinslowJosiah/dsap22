@@ -1,5 +1,5 @@
 from typing import Any, Callable, Iterable, Optional
-from .linked_list import SingleLinkedList
+from .linked_list import SLList
 
 
 class Stack:
@@ -16,7 +16,7 @@ class Stack:
             Iterable to populate the stack with. The first element will
             be on the top, and the last element will be on the bottom.
         """
-        self.stack: SingleLinkedList = SingleLinkedList(iterable)
+        self.stack: SLList = SLList(iterable)
         self.size: int = len(self.stack)
 
     def __len__(self) -> int:

@@ -6,7 +6,7 @@ sys.path.insert(0, path.join(path.dirname(path.abspath(__file__)), r".."))
 from ast import literal_eval
 from typing import Any, Iterable
 
-from utils import SingleLinkedList
+from utils import SLList
 
 def main():
     def input_value(prompt: str = ""):
@@ -193,7 +193,7 @@ def main():
                 print("Invalid choice.")
 
 def input_sllist():
-    # Enter iterable for SingleLinkedList constructor
+    # Enter iterable for SLList constructor
     while True:
         iterable: Iterable[Any]
         try:
@@ -217,7 +217,7 @@ def input_sllist():
         else:
             break
 
-    # Enter mu-value for SingleLinkedList constructor
+    # Enter mu-value for SLList constructor
     while True:
         try:
             mu_str = input("Starting index of cycle (blank for no cycle): ")
@@ -231,7 +231,7 @@ def input_sllist():
         else:
             break
 
-    return SingleLinkedList(iterable, mu)
+    return SLList(iterable, mu)
 
 if __name__ == "__main__":
     main()

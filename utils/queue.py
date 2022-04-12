@@ -1,5 +1,5 @@
 from typing import Any, Iterable, Optional
-from .linked_list import DoubleLinkedList
+from .linked_list import DLList
 
 
 class Queue:
@@ -16,7 +16,7 @@ class Queue:
             Iterable to populate the queue with.
         """
 
-        self.queue: DoubleLinkedList = DoubleLinkedList(iterable)
+        self.queue: DLList = DLList(iterable)
         self.size: int = len(self.queue)
 
     def __len__(self) -> int:
