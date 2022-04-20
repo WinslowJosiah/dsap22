@@ -41,7 +41,7 @@ class SLList:
 
         if iterable is not None:
             try:
-                for val in reversed(iterable): # type: ignore
+                for val in reversed(iterable):  # type: ignore
                     self.prepend(val)
             except TypeError:
                 for val in iterable:
