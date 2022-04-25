@@ -1,4 +1,4 @@
-from typing import Any, Callable, Iterable, Optional
+from typing import Any, Callable, Generator, Iterable, Optional
 
 
 class SLList:
@@ -54,11 +54,11 @@ class SLList:
         lam, mu = self.find_cycle()
         return lam + mu
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Any, None, None]:
         for p in self.iternodes():
             yield p.value
 
-    def iternodes(self):
+    def iternodes(self) -> Generator["SLList.Node", None, None]:
         """
         Yield each node in the linked list.
 
@@ -723,11 +723,11 @@ class DLList:
             n += 1
         return n
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Any, None, None]:
         for p in self.iternodes():
             yield p.value
 
-    def iternodes(self):
+    def iternodes(self) -> Generator["DLList.Node", None, None]:
         """
         Yield each node in the linked list.
 
@@ -737,7 +737,7 @@ class DLList:
 
         Yields
         ------
-        SLList.Node
+        DLList.Node
             Node object within the linked list.
         """
         p = self.head
@@ -747,11 +747,11 @@ class DLList:
             if p == self.head:
                 break
 
-    def __reversed__(self):
+    def __reversed__(self) -> Generator[Any, None, None]:
         for p in self.reversednodes():
             yield p.value
 
-    def reversednodes(self):
+    def reversednodes(self) -> Generator[Any, None, None]:
         """
         Yield each node in the linked list in reverse.
 
