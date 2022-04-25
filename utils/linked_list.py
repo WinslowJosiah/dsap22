@@ -510,8 +510,8 @@ class SLList:
         n = lam + mu
         while n > 1:
             new_n = 0
-            o = None
-            p = self.head
+            o: Optional[SLList.Node] = None
+            p: Optional[SLList.Node] = self.head
             for i in range(1, n):
                 assert p is not None
                 assert p.next is not None
@@ -519,7 +519,7 @@ class SLList:
                 if should_swap(i):
                     keys[i - 1], keys[i] = keys[i], keys[i - 1]
 
-                    q: SLList.Node = p.next
+                    q: Optional[SLList.Node] = p.next
                     p.next = q.next
                     q.next = p
                     if o is None:
@@ -529,6 +529,8 @@ class SLList:
                     p, q = q, p
 
                     new_n = i
+
+                assert p.next is not None
                 o, p = p, p.next
             n = new_n
 
@@ -1160,8 +1162,8 @@ class DLList:
         n = len(self)
         while n > 1:
             new_n = 0
-            o = None
-            p = self.head
+            o: Optional[DLList.Node] = None
+            p: Optional[DLList.Node] = self.head
             for i in range(1, n):
                 assert p is not None
                 assert p.next is not None
@@ -1169,7 +1171,7 @@ class DLList:
                 if should_swap(i):
                     keys[i - 1], keys[i] = keys[i], keys[i - 1]
 
-                    q: DLList.Node = p.next
+                    q: Optional[DLList.Node] = p.next
                     r = q.next
                     p.next = q.next
                     q.prev = p.prev
