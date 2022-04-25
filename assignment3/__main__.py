@@ -202,7 +202,7 @@ def input_sllist():
             iterable_str = input(
                 "Iterable to initialize linked list (blank for nothing): "
             )
-            if len(iterable_str) == 0 or iterable_str.isspace():
+            if not iterable_str or iterable_str.isspace():
                 iterable = []
             else:
                 iterable = literal_eval(iterable_str)
@@ -223,7 +223,7 @@ def input_sllist():
     while True:
         try:
             mu_str = input("Starting index of cycle (blank for no cycle): ")
-            if len(mu_str) == 0 or mu_str.isspace():
+            if not mu_str or mu_str.isspace():
                 mu = None
             else:
                 mu = literal_eval(mu_str)
