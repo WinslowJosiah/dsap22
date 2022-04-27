@@ -1,4 +1,4 @@
-from typing import Any, Callable, Iterable, Optional
+from typing import Any, Callable, Generator, Iterable, Optional
 from .linked_list import SLList
 
 
@@ -22,7 +22,7 @@ class Stack:
     def __len__(self) -> int:
         return self.size
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Any, None, None]:
         for val in self.stack:
             yield val
 

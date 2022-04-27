@@ -145,7 +145,7 @@ def download_dataset(name: IMDbDataset):
 
 
 def main():
-    config: ConfigParser = ConfigParser()
+    config: ConfigParser = ConfigParser(inline_comment_prefixes=('#', ';'))
 
     config_file_exists: bool = False
     print("Finding config file...")
@@ -322,6 +322,7 @@ def main():
         # Check if movie ID is valid
         m = re.fullmatch(r"(?:tt)?(\d+)", movie)
         if not m:
+            print(repr(movie))
             continue
 
         # Use movie ID to search for info

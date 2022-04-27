@@ -53,14 +53,14 @@ def main():
         print()
 
         match choice:
-            case 1: # display list
+            case 1:  # display list
                 print(f"str(sllist) = {str(sllist)}")
                 print(f"repr(sllist) = {repr(sllist)}")
 
-            case 2: # count nodes
+            case 2:  # count nodes
                 print(f"Length of list is {len(sllist)}.")
 
-            case 3: # search
+            case 3:  # search
                 val = input_value("Enter value to search for: ")
                 try:
                     index = sllist.index(val)
@@ -69,17 +69,17 @@ def main():
                 else:
                     print(f"Value {val!r} found at index {index}.")
 
-            case 4: # insert at beginning
+            case 4:  # insert at beginning
                 val = input_value("Enter value to insert: ")
                 sllist.prepend(val)
                 print(f"Value {val!r} inserted at beginning.")
 
-            case 5: # insert at end
+            case 5:  # insert at end
                 val = input_value("Enter value to insert: ")
                 sllist.append(val)
                 print(f"Value {val!r} inserted at end.")
 
-            case 6: # insert at position
+            case 6:  # insert at position
                 pos = input_value("Enter position to insert at: ")
                 val = input_value("Enter value to insert: ")
                 try:
@@ -89,7 +89,7 @@ def main():
                 else:
                     print(f"Value {val!r} inserted at position {pos}.")
 
-            case 7: # delete first node
+            case 7:  # delete first node
                 try:
                     val = sllist.pop_front()
                 except Exception as e:
@@ -97,7 +97,7 @@ def main():
                 else:
                     print(f"Value {val!r} deleted from beginning.")
 
-            case 8: # delete last node
+            case 8:  # delete last node
                 try:
                     val = sllist.pop_back()
                 except Exception as e:
@@ -105,7 +105,7 @@ def main():
                 else:
                     print(f"Value {val!r} deleted from end.")
 
-            case 9: # delete at position
+            case 9:  # delete at position
                 pos = input_value(
                     "Enter position to delete from (None for end): "
                 )
@@ -119,7 +119,7 @@ def main():
                     else:
                         print(f"Value {val!r} deleted from position {pos}.")
 
-            case 10: # get item at position
+            case 10:  # get item at position
                 pos = input_value("Enter position of value: ")
                 try:
                     val = sllist[pos]
@@ -128,7 +128,7 @@ def main():
                 else:
                     print(f"The value at index {pos} is {val!r}.")
 
-            case 11: # set item at position
+            case 11:  # set item at position
                 pos = input_value("Enter position of value: ")
                 val = input_value("Enter new value: ")
                 try:
@@ -138,7 +138,7 @@ def main():
                 else:
                     print(f"Index {pos} set to {val!r}.")
 
-            case 12: # reverse list
+            case 12:  # reverse list
                 try:
                     sllist.reverse()
                 except Exception as e:
@@ -146,7 +146,7 @@ def main():
                 else:
                     print(f"List has been reversed.")
 
-            case 13: # sort by exchanging data
+            case 13:  # sort by exchanging data
                 try:
                     sllist.sort_values()
                 except Exception as e:
@@ -154,7 +154,7 @@ def main():
                 else:
                     print(f"List has been sorted by data.")
 
-            case 14: # sort by exchanging links
+            case 14:  # sort by exchanging links
                 try:
                     sllist.sort_items()
                 except Exception as e:
@@ -162,7 +162,7 @@ def main():
                 else:
                     print(f"List has been sorted by links.")
 
-            case 15: # insert cycle
+            case 15:  # insert cycle
                 mu = input_value("Enter starting index of cycle: ")
                 try:
                     sllist.insert_cycle(mu)
@@ -173,7 +173,7 @@ def main():
                         f"Cycle has been inserted starting at position {mu}."
                     )
 
-            case 16: # detect cycle
+            case 16:  # detect cycle
                 lam, mu = sllist.find_cycle()
                 if lam == 0:
                     print(f"No cycle found.")
@@ -183,11 +183,11 @@ def main():
                     )
                 print(f"Length of list is {lam + mu}.")
 
-            case 17: # remove cycle
+            case 17:  # remove cycle
                 sllist.remove_cycle()
                 print(f"Cycle has been removed.")
 
-            case 18: # quit
+            case 18:  # quit
                 break
 
             case _:
@@ -202,7 +202,7 @@ def input_sllist():
             iterable_str = input(
                 "Iterable to initialize linked list (blank for nothing): "
             )
-            if len(iterable_str) == 0 or iterable_str.isspace():
+            if not iterable_str or iterable_str.isspace():
                 iterable = []
             else:
                 iterable = literal_eval(iterable_str)
@@ -223,7 +223,7 @@ def input_sllist():
     while True:
         try:
             mu_str = input("Starting index of cycle (blank for no cycle): ")
-            if len(mu_str) == 0 or mu_str.isspace():
+            if not mu_str or mu_str.isspace():
                 mu = None
             else:
                 mu = literal_eval(mu_str)

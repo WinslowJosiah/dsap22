@@ -1,4 +1,4 @@
-from typing import Any, Callable, Iterable, Optional
+from typing import Any, Callable, Generator, Iterable, Optional
 
 
 class SLList:
@@ -41,7 +41,7 @@ class SLList:
 
         if iterable is not None:
             try:
-                for val in reversed(iterable): # type: ignore
+                for val in reversed(iterable):  # type: ignore
                     self.prepend(val)
             except TypeError:
                 for val in iterable:
@@ -54,11 +54,11 @@ class SLList:
         lam, mu = self.find_cycle()
         return lam + mu
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Any, None, None]:
         for p in self.iternodes():
             yield p.value
 
-    def iternodes(self):
+    def iternodes(self) -> Generator["SLList.Node", None, None]:
         """
         Yield each node in the linked list.
 
@@ -510,8 +510,8 @@ class SLList:
         n = lam + mu
         while n > 1:
             new_n = 0
-            o = None
-            p = self.head
+            o: Optional[SLList.Node] = None
+            p: Optional[SLList.Node] = self.head
             for i in range(1, n):
                 assert p is not None
                 assert p.next is not None
@@ -519,7 +519,7 @@ class SLList:
                 if should_swap(i):
                     keys[i - 1], keys[i] = keys[i], keys[i - 1]
 
-                    q: SLList.Node = p.next
+                    q: Optional[SLList.Node] = p.next
                     p.next = q.next
                     q.next = p
                     if o is None:
@@ -529,6 +529,8 @@ class SLList:
                     p, q = q, p
 
                     new_n = i
+
+                assert p.next is not None
                 o, p = p, p.next
             n = new_n
 
@@ -721,11 +723,11 @@ class DLList:
             n += 1
         return n
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Any, None, None]:
         for p in self.iternodes():
             yield p.value
 
-    def iternodes(self):
+    def iternodes(self) -> Generator["DLList.Node", None, None]:
         """
         Yield each node in the linked list.
 
@@ -735,7 +737,7 @@ class DLList:
 
         Yields
         ------
-        SLList.Node
+        DLList.Node
             Node object within the linked list.
         """
         p = self.head
@@ -745,11 +747,11 @@ class DLList:
             if p == self.head:
                 break
 
-    def __reversed__(self):
+    def __reversed__(self) -> Generator[Any, None, None]:
         for p in self.reversednodes():
             yield p.value
 
-    def reversednodes(self):
+    def reversednodes(self) -> Generator[Any, None, None]:
         """
         Yield each node in the linked list in reverse.
 
@@ -1160,8 +1162,8 @@ class DLList:
         n = len(self)
         while n > 1:
             new_n = 0
-            o = None
-            p = self.head
+            o: Optional[DLList.Node] = None
+            p: Optional[DLList.Node] = self.head
             for i in range(1, n):
                 assert p is not None
                 assert p.next is not None
@@ -1169,7 +1171,7 @@ class DLList:
                 if should_swap(i):
                     keys[i - 1], keys[i] = keys[i], keys[i - 1]
 
-                    q: DLList.Node = p.next
+                    q: Optional[DLList.Node] = p.next
                     r = q.next
                     p.next = q.next
                     q.prev = p.prev

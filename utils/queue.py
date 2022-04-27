@@ -1,4 +1,4 @@
-from typing import Any, Iterable, Optional
+from typing import Any, Generator, Iterable, Optional
 from .linked_list import DLList
 
 
@@ -22,11 +22,11 @@ class Queue:
     def __len__(self) -> int:
         return self.size
 
-    def __iter__(self):
+    def __iter__(self) -> Generator[Any, None, None]:
         for val in self.queue:
             yield val
 
-    def __reversed__(self):
+    def __reversed__(self) -> Generator[Any, None, None]:
         for val in reversed(self.queue):
             yield val
 
