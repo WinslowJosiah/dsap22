@@ -16,11 +16,11 @@ class BSTree:
             ----------
             value
                 Value of this node.
-            balance: int
+            balance : int
                 Balance factor of this node.
-            left: BSTree.Node, optional
+            left : BSTree.Node, optional
                 Left child of this node.
-            right: BSTree.Node, optional
+            right : BSTree.Node, optional
                 Right child of this node.
             """
             self.left: Optional[BSTree.Node] = left
