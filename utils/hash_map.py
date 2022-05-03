@@ -1,5 +1,6 @@
 import sys
-from typing import Any, Generator, Hashable, Iterable, Mapping, MutableMapping, NamedTuple, Optional
+from typing import (Any, Generator, Hashable, Iterable, Mapping,
+    MutableMapping, NamedTuple, Optional)
 
 
 class HashElement(NamedTuple):
