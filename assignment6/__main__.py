@@ -39,9 +39,9 @@ def get_freq_difference(h1: HashMap, h2: HashMap) -> HashMap:
 
     Parameters
     ----------
-    h1: HashMap
+    h1 : HashMap
         Hash map to be subtracted from.
-    h2: HashMap
+    h2 : HashMap
         Hash map to subtract.
 
     Returns
