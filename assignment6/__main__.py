@@ -84,14 +84,14 @@ def main():
             print("The source phrase has...")
         for k, v in source_diff.items():
             plural = "" if v == 1 else "'s"
-            print(f"{v} extra {k}{plural}")
+            print(f"\t{v} extra {k}{plural}")
 
         target_diff = get_freq_difference(target_map, source_map)
         if target_diff:
             print("The target phrase has...")
         for k, v in target_diff.items():
             plural = "" if v == 1 else "'s"
-            print(f"{v} extra {k}{plural}")
+            print(f"\t{v} extra {k}{plural}")
 
 
 if __name__ == "__main__":
