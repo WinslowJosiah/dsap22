@@ -322,7 +322,6 @@ def main():
         # Check if movie ID is valid
         m = re.fullmatch(r"(?:tt)?(\d+)", movie)
         if not m:
-            print(repr(movie))
             continue
 
         # Use movie ID to search for info
@@ -391,7 +390,7 @@ def main():
 
         # Update actor info
         for category in actor_categories:
-            for title in person["filmography"].get(category, []):
+            for title in person.get("filmography", {}).get(category, []):
                 movie_id_full: str = f"tt{title.getID()}"
                 if movie_id_full not in movies:
                     # Filter movie based on movie categories
