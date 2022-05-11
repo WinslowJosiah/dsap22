@@ -3,7 +3,8 @@ from typing import Any, Generator, Iterable, Optional
 
 class BSTree:
     class Node:
-        def __init__(self,
+        def __init__(
+            self,
             value: Any,
             balance: int = 0,
             left: Optional["BSTree.Node"] = None,
