@@ -30,15 +30,12 @@ class BSTree:
             self.value: Any = value
             self.bf: int = balance
 
-        def __len__(self) -> int:
-            left_len = 0
-            right_len = 0
-            if self.left is not None:
-                left_len = len(self.left)
-            if self.right is not None:
-                right_len = len(self.right)
+            self.size: int = (
+                1 + getattr(left, "size", 0) + getattr(right, "size", 0)
+            )
 
-            return 1 + left_len + right_len
+        def __len__(self) -> int:
+            return self.size
 
         def __iter__(self) -> Generator[Any, None, None]:
             # Note: this will do an inorder traversal of this node.
@@ -69,6 +66,23 @@ class BSTree:
             if self.left is not None:
                 for val in reversed(self.left):
                     yield val
+
+        def __getitem__(self, pos: int) -> Any:
+            if pos < 0:
+                return self[pos + self.size]
+
+            if pos >= self.size:
+                raise IndexError("binary search tree index out of range")
+
+            i = getattr(self.left, "size", 0)
+            if pos == i:
+                return self.value
+            elif pos < i:
+                assert self.left is not None
+                return self.left[pos]
+            else:
+                assert self.right is not None
+                return self.right[pos - i - 1]
 
         def __str__(self) -> str:
             return str(self.value)
@@ -157,11 +171,13 @@ class BSTree:
                 if self.left is None:
                     # Create left subtree if it doesn't exist
                     self.left = BSTree.Node(val)
+                    self.size += 1
                     self.bf -= 1
                 else:
                     old_bf = self.left.bf
                     # If left subtree exists, insert this value in it
                     self.left = self.left.insert(val)
+                    self.size += 1
 
                     if (
                         # If left subtree balance factor got more non-positive
@@ -176,11 +192,13 @@ class BSTree:
                 if self.right is None:
                     # Create right subtree if it doesn't exist
                     self.right = BSTree.Node(val)
+                    self.size += 1
                     self.bf += 1
                 else:
                     old_bf = self.right.bf
                     # If right subtree exists, insert this value into it
                     self.right = self.right.insert(val)
+                    self.size += 1
 
                     if (
                         # If right subtree balance factor got more non-positive
@@ -221,6 +239,7 @@ class BSTree:
                 old_bf = self.left.bf
                 # Delete this value from the left subtree
                 self.left = self.left.delete(val)
+                self.size -= 1
 
                 if (
                     # If left subtree no longer exists
@@ -239,6 +258,7 @@ class BSTree:
                 old_bf = self.right.bf
                 # Delete this value from the right subtree
                 self.right = self.right.delete(val)
+                self.size -= 1
 
                 if (
                     # If right subtree no longer exists
@@ -268,6 +288,7 @@ class BSTree:
                 # Delete the node with this previous value
                 # (This will never be a node with two children)
                 self.left = self.left.delete(successor_val)
+                self.size -= 1
                 if (
                     # If left subtree no longer exists
                     self.left is None
@@ -338,6 +359,10 @@ class BSTree:
             self.bf -= 1 + max(b.bf, 0)
             b.bf -= 1 - min(self.bf, 0)
 
+            # Update sizes
+            b.size = self.size
+            self.size -= getattr(b.right, "size", 0) + 1
+
             return b
 
         def rotate_right(self) -> "BSTree.Node":
@@ -364,6 +389,10 @@ class BSTree:
             self.bf += 1 - min(b.bf, 0)
             b.bf += 1 + max(self.bf, 0)
 
+            # Update sizes
+            b.size = self.size
+            self.size -= getattr(b.left, "size", 0) + 1
+
             return b
 
 
@@ -386,9 +415,7 @@ class BSTree:
                 self.insert(val)
 
     def __len__(self) -> int:
-        if self.root is None:
-            return 0
-        return len(self.root)
+        return getattr(self.root, "size", 0)
 
     def __iter__(self) -> Generator[Any, None, None]:
         if self.root is None:
@@ -405,13 +432,9 @@ class BSTree:
             yield val
 
     def __getitem__(self, pos: int) -> Any:
-        # This handles both positive and negative indices in 4 lines!
-        # Isn't Python great sometimes?
-        for i, val in enumerate(reversed(self) if pos < 0 else self):
-            if (-i - 1 if pos < 0 else i) == pos:
-                return val
-
-        raise IndexError("binary search tree index out of range")
+        if self.root is None:
+            raise IndexError("binary search tree index out of range")
+        return self.root[pos]
 
     def __setitem__(self, pos: int, val: Any) -> None:
         self.delete(self[pos])
