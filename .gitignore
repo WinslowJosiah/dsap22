@@ -4,6 +4,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-*.tsv
-*.json
-*.ini
+assignment4/**/*.tsv
+assignment4/**/*.json
+assignment4/**/*.ini
+
+final/**/*.txt
