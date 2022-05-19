@@ -10,13 +10,33 @@ import textwrap
 import time
 import wordfreq
 from sortedcontainers import SortedKeyList  # type: ignore
-from typing import Any, Callable, Optional, Sequence
+from typing import Any, Callable, NamedTuple, Optional, Sequence
 
 from utils import Trie
 
 FILEDIR = path.dirname(path.abspath(__file__))
 
 WORD_SEPARATOR = "  "
+
+SCRABBLE_TILE_SCORES = {
+    "a": 1, "e": 1, "i": 1, "l": 1, "n": 1,
+    "o": 1, "r": 1, "s": 1, "t": 1, "u": 1,
+    "d": 2, "g": 2,
+    "b": 3, "c": 3, "m": 3, "p": 3,
+    "f": 4, "h": 4, "v": 4, "w": 4, "y": 4,
+    "k": 5,
+    "j": 8, "x": 8,
+    "q": 10, "z": 10,
+}
+
+
+class Entry(NamedTuple):
+    definition: str
+    score: int
+
+
+def scrabble_score(word: str) -> int:
+    return sum(SCRABBLE_TILE_SCORES.get(c.lower(), 0) for c in word)
 
 
 def search_trie(
@@ -142,8 +162,10 @@ def main():
         f.readline()  # Header line
         f.readline()  # Blank line
         for line in f:
-            info = line.strip().split("\t")
-            words[info[0].lower()] = info[1]
+            word, definition = line.strip().split("\t")
+            word = word.lower()
+
+            words[word] = Entry(definition, scrabble_score(word))
     print("Trie created.")
     print(f"Length: {len(words)} words")
     print()
@@ -158,10 +180,12 @@ def main():
         definition_exists: bool = False
         # If search term is in the dictionary
         if search_term in words:
+            entry: Entry = words[search_term]
+
             # Print the definition
             print()
-            print(search_term)
-            print(f"\t{words[search_term]}")
+            print(f"{search_term}  (score: {entry.score})")
+            print(f"\t{entry.definition}")
             print()
             definition_exists = True
 
@@ -279,7 +303,7 @@ def main():
                 break
             print("Please enter a definition.")
 
-        words[word] = definition
+        words[word] = Entry(definition, scrabble_score(word))
         print(f"Entry added for \"{word}\".")
 
 
